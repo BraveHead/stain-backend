@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Header,
@@ -9,8 +10,8 @@ import {
   Redirect,
   Req,
 } from '@nestjs/common';
-import { log } from 'console';
 import { Request } from 'express';
+import { CreateCatDto } from './create-cat.dto';
 
 @Controller('cats')
 export class CatsController {
@@ -18,8 +19,15 @@ export class CatsController {
   @Post()
   @HttpCode(202)
   @Header('Cache-Control', 'none')
-  create(): string {
-    return 'This action add a new cat';
+  async createCat(
+    @Body() createCatDto: CreateCatDto,
+  ): Promise<string | Record<string, any>> {
+    console.log('createCatDto:', createCatDto);
+    return !createCatDto?.age
+      ? 'This action add a new cat'
+      : {
+          ...createCatDto,
+        };
   }
 
   //** get /cats */
