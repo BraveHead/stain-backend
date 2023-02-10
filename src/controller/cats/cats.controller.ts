@@ -3,6 +3,7 @@ import {
   Get,
   Header,
   HttpCode,
+  Param,
   Post,
   Query,
   Redirect,
@@ -26,6 +27,13 @@ export class CatsController {
   findAll(@Req() request: Request): string {
     return 'This action returns all cats!';
   }
+
+  @Get(':id')
+  findOne(@Param() params): string {
+    console.log('paramsId:', params.id);
+    return `This action returns a #${params.id} cat`;
+  }
+
   //** get /cats/ab* */
   @Get('ab*')
   find(): string {
