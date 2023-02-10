@@ -24,8 +24,15 @@ export class CatsController {
 
   //** get /cats */
   @Get()
-  findAll(@Req() request: Request): string {
-    return 'This action returns all cats!';
+  async findAll(@Req() request: Request): Promise<string> {
+    const text = 'This action returns all cats!';
+    const processData = new Promise<string>((resolve) => {
+      setTimeout(() => {
+        resolve(text);
+      }, 3000);
+    });
+    const newData = await processData;
+    return newData;
   }
 
   @Get(':id')
