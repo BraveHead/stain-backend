@@ -1,3 +1,5 @@
+import { Cat } from '@/interface/cat.interface';
+import { CatsService } from '@/service/cats/cats.service';
 import {
   Body,
   Controller,
@@ -8,13 +10,12 @@ import {
   Post,
   Query,
   Redirect,
-  Req,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { CreateCatDto } from './create-cat.dto';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {}
   //** post /cats */
   @Post()
   @HttpCode(202)
@@ -22,7 +23,7 @@ export class CatsController {
   async createCat(
     @Body() createCatDto: CreateCatDto,
   ): Promise<string | Record<string, any>> {
-    console.log('createCatDto:', createCatDto);
+    this.catsService.create(createCatDto);
     return !createCatDto?.age
       ? 'This action add a new cat'
       : {
@@ -32,15 +33,16 @@ export class CatsController {
 
   //** get /cats */
   @Get()
-  async findAll(@Req() request: Request): Promise<string> {
-    const text = 'This action returns all cats!';
-    const processData = new Promise<string>((resolve) => {
-      setTimeout(() => {
-        resolve(text);
-      }, 3000);
-    });
-    const newData = await processData;
-    return newData;
+  async findAll(): Promise<Cat[]> {
+    // const text = 'This action returns all cats!';
+    // const processData = new Promise<string>((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(text);
+    //   }, 3000);
+    // });
+    // const newData = await processData;
+    // return newData;
+    return this.catsService.findAll();
   }
 
   @Get(':id')
