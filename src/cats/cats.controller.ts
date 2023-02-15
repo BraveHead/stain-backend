@@ -1,5 +1,4 @@
-import { Cat } from '@/interface/cat.interface';
-import { CatsService } from '@/service/cats/cats.service';
+import { Cat } from '@/cats/interfaces/cat.interface';
 import {
   Body,
   Controller,
@@ -11,7 +10,8 @@ import {
   Query,
   Redirect,
 } from '@nestjs/common';
-import { CreateCatDto } from './create-cat.dto';
+import { CatsService } from './cats.service';
+import { CreateCatDto } from './dto/create-cat.dto';
 
 @Controller('cats')
 export class CatsController {
