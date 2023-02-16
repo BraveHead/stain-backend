@@ -1,4 +1,5 @@
 import { Cat } from '@/cats/interfaces/cat.interface';
+import { HttpExceptionFilter } from '@/common/exception/http-execption.filter';
 import {
   Body,
   Controller,
@@ -9,6 +10,7 @@ import {
   Post,
   Query,
   Redirect,
+  UseFilters,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -18,9 +20,10 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
   //** post /cats */
   @Post()
-  @HttpCode(202)
-  @Header('Cache-Control', 'none')
-  async createCat(
+  // @HttpCode(202)
+  // @Header('Cache-Control', 'none')
+  @UseFilters(HttpExceptionFilter)
+  async create(
     @Body() createCatDto: CreateCatDto,
   ): Promise<string | Record<string, any>> {
     this.catsService.create(createCatDto);

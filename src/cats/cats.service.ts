@@ -1,5 +1,6 @@
 import { Cat } from '@/cats/interfaces/cat.interface';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException } from '@/common/exception/forbidden.exception';
+import { GatewayTimeoutException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CatsService {
@@ -10,6 +11,7 @@ export class CatsService {
   }
 
   findAll(): Cat[] {
+    // throw new GatewayTimeoutException();
     return this.cats;
   }
 }
