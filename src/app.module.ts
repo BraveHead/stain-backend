@@ -15,11 +15,20 @@ import {
   logger,
   LoggerMiddleware,
 } from './common/middleware/logger.middleware';
+// import { APP_GUARD } from '@nestjs/core';
+// import { RolesGuard } from './common/guard/roles.guard';
 
 @Module({
   imports: [CatsModule],
   controllers: [AppController, CatsController, AccountController],
-  providers: [AppService, CatsService],
+  providers: [
+    AppService,
+    CatsService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
+  ],
 })
 export class AppModule implements NestModule {
   async configure(consumer: MiddlewareConsumer) {
