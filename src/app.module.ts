@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -15,11 +16,15 @@ import {
   logger,
   LoggerMiddleware,
 } from './common/middleware/logger.middleware';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
+import { TransformInterceptor } from './common/interceptor/transform.interceptor';
+import { HttpExceptionFilter } from './common/exception/http-execption.filter';
 // import { APP_GUARD } from '@nestjs/core';
 // import { RolesGuard } from './common/guard/roles.guard';
 
 @Module({
-  imports: [CatsModule],
+  imports: [CatsModule, CacheModule.register()],
   controllers: [AppController, CatsController, AccountController],
   providers: [
     AppService,
@@ -28,6 +33,18 @@ import {
     //   provide: APP_GUARD,
     //   useClass: RolesGuard,
     // },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
   ],
 })
 export class AppModule implements NestModule {

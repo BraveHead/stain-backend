@@ -1,6 +1,10 @@
 import { Cat } from '@/cats/interfaces/cat.interface';
 import { GatewayTimeoutException, Injectable } from '@nestjs/common';
 
+const timeout = (ms: number) => {
+  return new Promise((resover) => setTimeout(resover, ms));
+};
+
 @Injectable()
 export class CatsService {
   private readonly cats: Cat[] = [];
@@ -9,8 +13,9 @@ export class CatsService {
     this.cats.push(cat);
   }
 
-  findAll(): Cat[] {
+  async findAll() {
     // throw new GatewayTimeoutException();
+    await timeout(6000);
     return this.cats;
   }
 }

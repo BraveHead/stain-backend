@@ -1,8 +1,14 @@
 import { Cat } from '@/cats/interfaces/cat.interface';
 import { HttpExceptionFilter } from '@/common/exception/http-execption.filter';
 import { RolesGuard } from '@/common/guard/roles.guard';
+import { CacheInterceptors } from '@/common/interceptor/cache.interceptor';
+import { ErrorsInterceptor } from '@/common/interceptor/exception.interceptor';
+import { LoggingInterceptor } from '@/common/interceptor/logging.interceptor';
+import { TimeoutInterceptor } from '@/common/interceptor/timeout.interceptor';
+import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
 import {
   Body,
+  // CacheInterceptor,
   Controller,
   Get,
   Header,
@@ -14,6 +20,7 @@ import {
   SetMetadata,
   UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -26,9 +33,9 @@ export class CatsController {
   // @SetMetadata('roles', ['admin'])
   // @HttpCode(202)
   // @Header('Cache-Control', 'none')
-  @UseFilters(HttpExceptionFilter)
   @UseGuards(RolesGuard)
   @SetMetadata('roles', ['admin'])
+  // @UseInterceptors(LoggingInterceptor)
   async create(
     @Body() createCatDto: CreateCatDto,
   ): Promise<string | Record<string, any>> {
@@ -42,6 +49,8 @@ export class CatsController {
 
   //** get /cats */
   @Get()
+  @UseInterceptors(TimeoutInterceptor)
+  // @UseInterceptors(CacheInterceptors)
   async findAll(): Promise<Cat[]> {
     // const text = 'This action returns all cats!';
     // const processData = new Promise<string>((resolve) => {
