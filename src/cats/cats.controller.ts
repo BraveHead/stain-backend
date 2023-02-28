@@ -1,4 +1,5 @@
 import { Cat } from '@/cats/interfaces/cat.interface';
+import { User } from '@/common/decorator/user.decorator';
 import { HttpExceptionFilter } from '@/common/exception/http-execption.filter';
 import { RolesGuard } from '@/common/guard/roles.guard';
 import { CacheInterceptors } from '@/common/interceptor/cache.interceptor';
@@ -22,6 +23,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import console from 'console';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 
@@ -51,7 +53,7 @@ export class CatsController {
   @Get()
   @UseInterceptors(TimeoutInterceptor)
   // @UseInterceptors(CacheInterceptors)
-  async findAll(): Promise<Cat[]> {
+  async findAll(@User() username: string): Promise<Cat[]> {
     // const text = 'This action returns all cats!';
     // const processData = new Promise<string>((resolve) => {
     //   setTimeout(() => {
@@ -60,7 +62,7 @@ export class CatsController {
     // });
     // const newData = await processData;
     // return newData;
-    return this.catsService.findAll();
+    return this.catsService.findAll(username);
   }
 
   @Get(':id')

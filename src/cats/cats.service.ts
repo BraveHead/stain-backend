@@ -1,4 +1,5 @@
 import { Cat } from '@/cats/interfaces/cat.interface';
+import { User } from '@/common/decorator/user.decorator';
 import { GatewayTimeoutException, Injectable } from '@nestjs/common';
 
 const timeout = (ms: number) => {
@@ -13,8 +14,9 @@ export class CatsService {
     this.cats.push(cat);
   }
 
-  async findAll() {
+  async findAll(username: string) {
     // throw new GatewayTimeoutException();
+    console.log('username:', username);
     await timeout(6000);
     return this.cats;
   }
