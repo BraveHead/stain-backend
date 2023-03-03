@@ -1,5 +1,6 @@
 import {
   CacheModule,
+  Dependencies,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -20,11 +21,32 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { TransformInterceptor } from './common/interceptor/transform.interceptor';
 import { HttpExceptionFilter } from './common/exception/http-execption.filter';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { User } from './User/user.entity';
+import { UserModule } from './User/user.module';
 // import { APP_GUARD } from '@nestjs/core';
 // import { RolesGuard } from './common/guard/roles.guard';
 
+@Dependencies(DataSource)
 @Module({
-  imports: [CatsModule, CacheModule.register()],
+  imports: [
+    CatsModule,
+    // CacheModule.register(),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'root',
+      password: 'zs123456',
+      database: 'typeorm_demo',
+      charset: 'utf8mb4',
+      entities: [User],
+      // retryAttempts: 12,
+      synchronize: true, // 不能用于生产环境
+    }),
+    UserModule,
+  ],
   controllers: [AppController, CatsController, AccountController],
   providers: [
     AppService,
