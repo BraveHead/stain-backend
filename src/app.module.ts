@@ -24,7 +24,7 @@ import { HttpExceptionFilter } from './common/exception/http-execption.filter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { User } from './User/user.entity';
-import { UserModule } from './User/user.module';
+import { UserHttpModule } from './User/users-http.module';
 // import { APP_GUARD } from '@nestjs/core';
 // import { RolesGuard } from './common/guard/roles.guard';
 
@@ -45,7 +45,7 @@ import { UserModule } from './User/user.module';
       // retryAttempts: 12,
       synchronize: true, // 不能用于生产环境
     }),
-    UserModule,
+    UserHttpModule,
   ],
   controllers: [AppController, CatsController, AccountController],
   providers: [
