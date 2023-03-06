@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -8,5 +9,11 @@ export class UserController {
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Post()
+  async createUsers(@Body() users: User[]) {
+    await this.userService.createMany(users);
+    console.log('createUsers eror!', users);
   }
 }

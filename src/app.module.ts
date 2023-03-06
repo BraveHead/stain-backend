@@ -44,6 +44,7 @@ import { UserHttpModule } from './User/users-http.module';
       entities: [User],
       // retryAttempts: 12,
       synchronize: true, // 不能用于生产环境
+      // autoLoadEntities: true,
     }),
     UserHttpModule,
   ],
@@ -70,6 +71,7 @@ import { UserHttpModule } from './User/users-http.module';
   ],
 })
 export class AppModule implements NestModule {
+  constructor(private dataSource: DataSource) {}
   async configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(logger, LoggerMiddleware)
