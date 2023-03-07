@@ -25,6 +25,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { User } from './User/user.entity';
 import { UserHttpModule } from './User/users-http.module';
+import { TypeOrmConfigService } from './typeorm.config.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 // import { APP_GUARD } from '@nestjs/core';
 // import { RolesGuard } from './common/guard/roles.guard';
 
@@ -33,18 +35,34 @@ import { UserHttpModule } from './User/users-http.module';
   imports: [
     CatsModule,
     // CacheModule.register(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: '127.0.0.1',
-      port: 3306,
-      username: 'root',
-      password: 'zs123456',
-      database: 'typeorm_demo',
-      charset: 'utf8mb4',
-      entities: [User],
-      // retryAttempts: 12,
-      synchronize: true, // 不能用于生产环境
-      // autoLoadEntities: true,
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql',
+    //   host: '127.0.0.1',
+    //   port: 3306,
+    //   username: 'root',
+    //   password: 'zs123456',
+    //   database: 'typeorm_demo',
+    //   charset: 'utf8mb4',
+    //   entities: [User],
+    //   // retryAttempts: 12,
+    //   synchronize: true, // 不能用于生产环境
+    //   // autoLoadEntities: true,
+    // }),
+    TypeOrmModule.forRootAsync({
+      // useFactory: () => ({
+      //   type: 'mysql',
+      //   host: '127.0.0.1',
+      //   port: 3306,
+      //   username: 'root',
+      //   password: 'zs123456',
+      //   database: 'typeorm_demo',
+      //   charset: 'utf8mb4',
+      //   entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      //   // retryAttempts: 12,
+      //   synchronize: true, // 不能用于生产环境
+      //   // autoLoadEntities: true,
+      // }),
+      useClass: TypeOrmConfigService,
     }),
     UserHttpModule,
   ],
