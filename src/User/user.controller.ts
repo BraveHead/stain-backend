@@ -14,6 +14,5 @@ export class UserController {
   @Post()
   async createUsers(@Body() users: User[]) {
     await this.userService.createMany(users);
-    console.log('createUsers eror!', users);
   }
 }
